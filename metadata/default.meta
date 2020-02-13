@@ -1,0 +1,2 @@
+[octopi]
+access = read : [ * ], write : [ admin ]

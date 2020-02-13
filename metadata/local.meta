@@ -1,0 +1,103 @@
+######
+# Indexes
+######
+
+[indexes/printing]
+owner = admin
+version = 8.0.0
+
+######
+# Extractions
+######
+
+[props/octopi/EXTRACT-baselogs]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+[props/octopi/EXTRACT-printjob]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+[props/octopi/EXTRACT-file]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+
+
+#####
+# Transforms
+#####
+
+[transforms/nullplugins]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+[transforms/nullpython]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+[transforms/nullGCODE]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+[inputs/monitor%3A%2F%2F%2Fmnt%2Fstorage%2FDropbox%2FD%26D%2F3D%2Fready_for_print]
+owner = admin
+version = 8.0.1
+modtime = 1581218568.257623000
+
+[app/ui]
+owner = admin
+version = 8.0.1
+modtime = 1581219045.847077000
+
+[app/launcher]
+owner = admin
+version = 8.0.1
+modtime = 1581219045.848069000
+
+[app/package/check_for_updates]
+version = 8.0.1
+modtime = 1581219045.849027000
+
+[props/crealityGCODE/EXTRACT-tempBed]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.0.1
+modtime = 1581219096.557275000
+
+[props/crealityGCODE/EXTRACT-tempTool]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.0.1
+modtime = 1581219134.915458000
+
+[props/crealityGCODE/EXTRACT-layer%2Cwalls%2Cfill]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.0.1
+modtime = 1581219299.264970000
+
+[props/crealityGCODE/EXTRACT-plaLength%2CplaMass]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.0.1
+modtime = 1581219507.903360000
+
+
+
