@@ -6,6 +6,19 @@
 owner = admin
 version = 8.0.0
 
+
+######
+# Reports 
+######
+
+[props/octopi/REPORT-filename]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+
+
 ######
 # Extractions
 ######
