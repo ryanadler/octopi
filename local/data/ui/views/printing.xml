@@ -25,4 +25,28 @@
       </table>
     </panel>
   </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>index=printing sourcetype=crealityGCODE
+| rex "\;Print time\: (?&lt;estimatedPrintTime&gt;.*)"
+| rex field=estimatedPrintTime "(?&lt;hours&gt;\d+) (hour|hours)" | rex field=estimatedPrintTime "(?&lt;minutes&gt;\d+) (minute|minutes)"
+| eval hours=if(match(hours,"(?&lt;!\S)\d(?!\S)"),"0".hours,hours), minutes=if(match(minutes,"(?&lt;!\S)\d(?!\S)"),"0".minutes,minutes) | fillnull value="00" hours,minutes
+| eval ept=hours.":".minutes
+| table _time file ept plaLength plaMass layer walls fill tempTool tempBed</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
 </dashboard>

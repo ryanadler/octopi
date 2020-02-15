@@ -113,9 +113,11 @@ version = 8.0.1
 modtime = 1581219507.903360000
 
 [views/printing]
+access = read : [ * ], write : [ admin ]
+export = none
 owner = admin
 version = 8.0.2
-modtime = 1581705984.455944000
+modtime = 1581739057.519278000
 
 
 
