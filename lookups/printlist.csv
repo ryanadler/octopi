@@ -12,7 +12,7 @@ file,plaLength,plaMass,finishedPrints
 "corner_hidden_door_door_section.gcode","3.273","9.0",1
 "corner_hidden_door_wall_section1.gcode","20.203","60.0",1
 "cut_stone_full_pillar.inch.1x1.round.tall.gcode","5.758","17.0",4
-"cut_stone_full_pillar.inch.1x1.square.gcode","3.397","10.0",2
+"cut_stone_full_pillar.inch.1x1.square.gcode","3.397","10.0",3
 "dungeon_stone_alcove.wall.inch.2x1.gcode","7.116","21.0",5
 "hidden_door_peg1.gcode","0.255","0.0",1
 "knight_tomb.gcode","3.186","9.0",1
