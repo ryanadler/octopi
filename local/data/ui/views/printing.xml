@@ -12,11 +12,11 @@
   </row>
   <row>
     <panel>
+      <title>List of Print Files Processed by Creality Slicer</title>
       <table>
         <search>
           <query>| inputlookup printlist.csv | sort - _time
-| join type=left file [search earliest=-7d@d index=printing sourcetype=octopi "PrintDone" file=*
-| stats count by file] | fillnull value=0 count</query>
+| join type=left file [ | inputlookup completedPrints.csv | stats count by file] | fillnull value=0 count</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -34,22 +34,20 @@
   </row>
   <row>
     <panel>
+      <title>List of Completed Prints</title>
       <table>
         <search>
-          <query>earliest=-7d@d index=printing sourcetype=octopi "PrintDone" file=* 
-| rex "\'time\'\: (?&lt;apt&gt;\d+\.\d+)\,"
-| eval hours=round(apt/3600,2)
-| rex field=hours "^(?&lt;hours&gt;\d+)\.(?&lt;minutes&gt;\d+)"
-| table file apt hours minutes time
-| eval test=60*.48</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <query>| inputlookup completedPrints.csv
+| fields _time file category actualPrintTime</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
         <option name="dataOverlayMode">none</option>
         <option name="drilldown">none</option>
         <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">false</option>
         <option name="totalsRow">false</option>
         <option name="wrap">true</option>
