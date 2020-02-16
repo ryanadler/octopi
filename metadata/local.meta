@@ -41,6 +41,19 @@ export = system
 owner = nobody
 version = 8.0.0
 
+[props/octopi/EXTRACT-apt]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+[props/octopi/EXTRACT-category]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
+
 
 
 #####
@@ -117,12 +130,17 @@ access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
 version = 8.0.2
-modtime = 1581815144.591446000
+modtime = 1581827584.144619000
 
 [savedsearches/Creatlity%20GCODE%20Print%20List]
 owner = admin
 version = 8.0.2
 modtime = 1581825862.711146000
+
+[savedsearches/Octoprint%20Completed%20Print%20History]
+owner = admin
+version = 8.0.2
+modtime = 1581877022.368391000
 
 
 
