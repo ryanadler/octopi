@@ -1,6 +1,16 @@
 <dashboard>
   <label>3D Printing</label>
   <row>
+     <panel>
+   <html>
+     <h3>Objectives for this project:</h3>
+    <body>
+      1) Determine the Accuracy of slicing software by: A)weighing completed prints, taking into account any waste that occurs (from skirts to supports, and cutoffs), B) juding the time taken to print vs estimated time to print, and determining if there is a global average between all models in % of how off the measurement is, C) measure the same print with different settings or software to see the differences.
+    </body>
+   </html>
+ </panel>
+  </row>
+  <row>
     <panel>
       <table>
         <search>
