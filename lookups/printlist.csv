@@ -1,4 +1,4 @@
-"_time",file,ept,plaLength,plaMass,layer,walls,fill,tempTool,tempBed
+"_time",file,estimatedPrintTime,plaLength,plaMass,layer,walls,fill,tempTool,tempBed
 1577038161,"humanmonkbase.gcode","00:35","1.145m","3.0g","0.15","0.8",15,220,50
 1581704148,"stone_floor_4x4.gcode","08:02","19.048m","56.0g","0.1","0.8",20,210,50
 1581704081,"Stalagmite.gcode","01:25","2.224m","6.0g","0.1","0.8",20,210,50

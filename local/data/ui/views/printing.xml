@@ -54,4 +54,32 @@
       </table>
     </panel>
   </row>
+  <row>
+    <panel>
+      <title>Print differentials</title>
+      <table>
+        <search>
+          <query>| inputlookup completedPrints.csv 
+| lookup printlist.csv file OUTPUT estimatedPrintTime plaMass
+| rex field=estimatedPrintTime "(?&lt;eHours&gt;\d+)\:(?&lt;eMinutes&gt;\d+)" 
+| rex field=actualPrintTime "(?&lt;aHours&gt;\d+)\:(?&lt;aMinutes&gt;\d+)" 
+| rex field=plaMass "(?&lt;estimatedWeight&gt;.*?)g"
+| eval eTime=((eHours*60*60)+(eMinutes*60)), aTime=((aHours*60*60)+(aMinutes*60)) 
+| eval deltaTime=(aTime-eTime), deltaWeight=(actualWeight-estimatedWeight)
+| fields _time category file estimatedPrintTime actualPrintTime deltaTime estimatedWeight actualWeight deltaWeight</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
 </dashboard>
