@@ -63,7 +63,7 @@
 | lookup printlist.csv file OUTPUT estimatedPrintTime plaMass
 | rex field=estimatedPrintTime "(?&lt;eHours&gt;\d+)\:(?&lt;eMinutes&gt;\d+)" 
 | rex field=actualPrintTime "(?&lt;aHours&gt;\d+)\:(?&lt;aMinutes&gt;\d+)" 
-| rex field=plaMass "(?&lt;estimatedWeight&gt;.*?)g"
+| eval estimatedWeight=plaMass
 | eval eTime=((eHours*60*60)+(eMinutes*60)), aTime=((aHours*60*60)+(aMinutes*60)) 
 | eval deltaTime=(aTime-eTime), deltaWeight=(actualWeight-estimatedWeight)
 | fields _time category file estimatedPrintTime actualPrintTime deltaTime estimatedWeight actualWeight deltaWeight</query>
