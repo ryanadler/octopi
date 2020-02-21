@@ -1,0 +1,35 @@
+<dashboard>
+  <label>Print Breakdown</label>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| inputlookup completedPrints.csv 
+| lookup printlist.csv file OUTPUT estimatedPrintTime plaMass 
+| rex field=estimatedPrintTime "(?&lt;eHours&gt;\d+)\:(?&lt;eMinutes&gt;\d+)" 
+| rex field=actualPrintTime "(?&lt;aHours&gt;\d+)\:(?&lt;aMinutes&gt;\d+)" 
+| eval estimatedWeight=round(plaMass,0) 
+| eval eTime=((eHours*60*60)+(eMinutes*60)), aTime=((aHours*60*60)+(aMinutes*60)) 
+| eval deltaTime=(aTime-eTime), deltaWeight=(actualWeight-estimatedWeight) 
+| stats median(deltaTime) as deltaTime median(deltaWeight) as deltaWeight median(eTime) as eTime median(aTime) as aTime median(actualWeight) as actualWeight median(estimatedWeight) as estimatedWeight by file 
+| eval percent=round(((aTime/eTime)*100)-100,2)."%" 
+| eval deltaTime=tostring(deltaTime,"duration"), deltaWeight=deltaWeight." grams" 
+| eval eTime=tostring(eTime,"duration"), aTime=tostring(aTime,"duration") 
+| fields file eTime aTime deltaTime percent estimatedWeight actualWeight deltaWeight 
+| rename deltaTime as "Median Time Differential", deltaWeight as "Median Weight Differential", percent as "% Under/Over", file as "File", eTime as "Estimated Print Time", aTime as "Actual Print Time", estimatedWeight as "Estimated PLA", actualWeight as "Actual PLA"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
