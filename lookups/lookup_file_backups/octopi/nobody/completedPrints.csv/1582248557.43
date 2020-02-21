@@ -12,6 +12,4 @@ _time,actualPrintTime,actualWeight,category,file
 1582103457.250,08:52,52,dungeon_parts,stone_floor_4x4.gcode
 1582154644.458,08:54,52,dungeon_parts,stone_floor_4x4.gcode
 1582175883.226,02:58,11,dungeon_parts,Abyssal_Floor_flat.gcode
-1582241461.954,08:22,41,dungeon_parts,wall_3x3.gcode
-1582246886.430,01:10,3,environment,Petrified_Male_1.gcode
-1582252506.183,00:55,2,environment,Petrified_Male_2.gcode
+"1582241461.954","08:22",0,"dungeon_parts","wall_3x3.gcode"
