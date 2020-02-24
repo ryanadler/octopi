@@ -1,0 +1,52 @@
+<dashboard>
+  <label>bed</label>
+  <row>
+    <panel>
+      <viz type="clock_viz.clock_viz">
+        <search>
+          <query>| makeresults</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="clock_viz.clock_viz.captsize">0.3</option>
+        <option name="clock_viz.clock_viz.datefmt">Do MMMM YYYY</option>
+        <option name="clock_viz.clock_viz.datesize">0.2</option>
+        <option name="clock_viz.clock_viz.font">aldrich</option>
+        <option name="clock_viz.clock_viz.format">HH:mm:ss</option>
+        <option name="clock_viz.clock_viz.numerals">false</option>
+        <option name="clock_viz.clock_viz.seconds">smooth</option>
+        <option name="clock_viz.clock_viz.showdate">false</option>
+        <option name="clock_viz.clock_viz.style">a</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode 
+| head 1 
+| eval date=_time 
+| table date file 
+| lookup completedPrints.csv file OUTPUT actualPrintTime 
+| fillnull value="First Time Printing, Estimate Not Possible" actualPrintTime 
+| mvexpand actualPrintTime 
+| eval predictedCompletion=strftime(date+actualPrintTime, "%F %T"), date=strftime(date,"%F %T")
+| rename date as "Print Started:", file as "File", actualPrintTime as "Previous Completed Duration", predictedCompletion as "Estimated Time of Completion"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
