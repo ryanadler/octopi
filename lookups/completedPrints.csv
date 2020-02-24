@@ -16,3 +16,8 @@ _time,actualPrintTime,actualWeight,category,file
 1582246886.430,01:10,3,environment,Petrified_Male_1.gcode
 1582252506.183,00:55,2,environment,Petrified_Male_2.gcode
 1582294679.000,08:22,41,dungeon_parts,wall_3x3.gcode
+"1582333680.877","04:05",0,"ender-misc","pi4_Bottom_Slots_SM.gcode"
+"1582359744.381","05:22",0,"ender-misc","pi4_Top_Slots_SM.gcode"
+"1582395594.454","02:55",0,enemy,"Troll_for_Shapeways.gcode"
+"1582409993.325","02:59",0,enemy,"Troll_for_Shapeways.gcode"
+"1582463909.549","08:26",0,"dungeon_parts","wall_3x3.gcode"

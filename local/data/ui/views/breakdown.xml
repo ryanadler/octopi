@@ -15,8 +15,9 @@
 | eval percent=round(((aTime/eTime)*100)-100,2)."%" 
 | eval deltaTime=tostring(deltaTime,"duration"), deltaWeight=deltaWeight." grams" 
 | eval eTime=tostring(eTime,"duration"), aTime=tostring(aTime,"duration") 
-| fields file eTime aTime deltaTime percent estimatedWeight actualWeight deltaWeight 
-| rename deltaTime as "Median Time Differential", deltaWeight as "Median Weight Differential", percent as "% Under/Over", file as "File", eTime as "Estimated Print Time", aTime as "Actual Print Time", estimatedWeight as "Estimated PLA", actualWeight as "Actual PLA"</query>
+| join file [ | inputlookup completedPrints.csv | stats count by file]
+| fields file count eTime aTime deltaTime percent estimatedWeight actualWeight deltaWeight 
+| rename deltaTime as "Median Time Differential", deltaWeight as "Median Weight Differential", percent as "% Under/Over", file as "File", eTime as "Estimated Print Time", aTime as "Actual Print Time", estimatedWeight as "Estimated PLA", actualWeight as "Actual PLA", count as "Completed Prints"</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
           <sampleRatio>1</sampleRatio>
@@ -26,6 +27,32 @@
         <option name="drilldown">none</option>
         <option name="percentagesRow">false</option>
         <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Most Recent Print Predictions</title>
+      <table>
+        <search>
+          <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode
+| head 1
+| table _time file
+| lookup completedPrints.csv file OUTPUT actualPrintTime | fillnull value="First Time Printing, Estimate Not Possible" actualPrintTime
+| mvexpand actualPrintTime | rex field=actualPrintTime "(?&lt;hours&gt;\d+)\:(?&lt;minutes&gt;\d+)"
+| eval hours=hours*60*60, minutes=minutes*60, printTime=hours+minutes
+| eval predictedCompletion=strftime(_time+printTime, "%F %T")</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
         <option name="rowNumbers">false</option>
         <option name="totalsRow">false</option>
         <option name="wrap">true</option>
