@@ -78,6 +78,12 @@ export = system
 owner = nobody
 version = 8.0.0
 
+[props/octopi/EXTRACT-state]
+access = read : [ * ], write : [ * ]
+export = system
+owner = nobody
+version = 8.0.0
+
 [props/crealityGCODE/EXTRACT-tempBed]
 access = read : [ * ], write : [ admin ]
 export = none
@@ -151,6 +157,16 @@ owner = admin
 version = 8.0.2
 modtime = 1581984270.760891000
 
+[views/breakdown]
+owner = admin
+version = 8.0.2
+modtime = 1582320844.231126000
+
+[views/bed]
+owner = admin
+version = 8.0.2
+modtime = 1582722840.532554000
+
 
 #####
 # Saved Searches
@@ -166,29 +182,17 @@ owner = admin
 version = 8.0.2
 modtime = 1582572529.561744000
 
+
+#####
+# Lookups
+#####
+
 [lookups/completedPrints.csv]
 version = 8.0.2
-modtime = 1582560199.666023000
+modtime = 1582721182.557218000
 
-[views/breakdown]
-owner = admin
+[lookups/printlist.csv]
 version = 8.0.2
-modtime = 1582320844.231126000
-
-[lookups/temp.csv]
-owner = admin
-version = 8.0.2
-modtime = 1582572211.588695000
-
-[lookups/tempe.csv]
-owner = admin
-version = 8.0.2
-modtime = 1582572720.555750000
-
-[views/bed]
-owner = admin
-version = 8.0.2
-modtime = 1582573855.425838000
-
+modtime = 1582721182.557218000
 
 

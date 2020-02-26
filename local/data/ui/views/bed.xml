@@ -1,23 +1,30 @@
-<dashboard>
+<dashboard theme="dark">
   <label>bed</label>
   <row>
     <panel>
-      <viz type="clock_viz.clock_viz">
+      <title>Present Printer State</title>
+      <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| makeresults</query>
+          <query>index=printing sourcetype=octopi "PrinterStateChanged" 
+| head 1
+| table state</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
         </search>
-        <option name="clock_viz.clock_viz.captsize">0.3</option>
-        <option name="clock_viz.clock_viz.datefmt">Do MMMM YYYY</option>
-        <option name="clock_viz.clock_viz.datesize">0.2</option>
-        <option name="clock_viz.clock_viz.font">aldrich</option>
-        <option name="clock_viz.clock_viz.format">HH:mm:ss</option>
-        <option name="clock_viz.clock_viz.numerals">false</option>
-        <option name="clock_viz.clock_viz.seconds">smooth</option>
-        <option name="clock_viz.clock_viz.showdate">false</option>
-        <option name="clock_viz.clock_viz.style">a</option>
+        <option name="departures-board-viz.departures-board-viz.align">left</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh">true</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
+        <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
+        <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
+        <option name="departures-board-viz.departures-board-viz.num_characters">10</option>
+        <option name="departures-board-viz.departures-board-viz.size">M</option>
+        <option name="departures-board-viz.departures-board-viz.text_align">left</option>
+        <option name="departures-board-viz.departures-board-viz.theme">dark</option>
+        <option name="departures-board-viz.departures-board-viz.timing">100</option>
+        <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
+        <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
         <option name="drilldown">none</option>
+        <option name="height">85</option>
         <option name="refresh.display">progressbar</option>
       </viz>
     </panel>
@@ -26,16 +33,16 @@
     <panel>
       <table>
         <search>
-          <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode 
-| head 1 
+          <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode  
 | eval date=_time 
 | table date file 
 | lookup completedPrints.csv file OUTPUT actualPrintTime 
 | fillnull value="First Time Printing, Estimate Not Possible" actualPrintTime 
 | mvexpand actualPrintTime 
 | eval predictedCompletion=strftime(date+actualPrintTime, "%F %T"), date=strftime(date,"%F %T")
-| rename date as "Print Started:", file as "File", actualPrintTime as "Previous Completed Duration", predictedCompletion as "Estimated Time of Completion"</query>
-          <earliest>-24h@h</earliest>
+| rename date as "Print Started:", file as "File", actualPrintTime as "Previous Completed Duration", predictedCompletion as "Estimated Time of Completion"
+| head 1</query>
+          <earliest>-7d@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
@@ -43,6 +50,7 @@
         <option name="dataOverlayMode">none</option>
         <option name="drilldown">none</option>
         <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">false</option>
         <option name="totalsRow">false</option>
         <option name="wrap">true</option>
