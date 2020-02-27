@@ -64,17 +64,4 @@
       </table>
     </panel>
   </row>
-  <row>
-    <panel>
-      <table>
-        <search>
-          <query>| makeresults | eval 1="$tok1$" | eval 5="$tok5$"</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
-        </search>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
-      </table>
-    </panel>
-  </row>
 </dashboard>
