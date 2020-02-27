@@ -5,7 +5,7 @@
       <title>Present Printer State</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>index=printing sourcetype=octopi "PrinterStateChanged" 
+          <query>index=printing sourcetype=octopi "PrinterStateChanged" state=*
 | head 1
 | table state</query>
           <earliest>$earliest$</earliest>
@@ -33,18 +33,25 @@
     <panel>
       <table>
         <search>
-          <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode  
-| eval date=_time 
-| table date file 
+          <done>
+            <set token="tok1">$result.\"Print%20Started\"$</set>
+            <set token="tok2">$result.File$</set>
+            <set token="tok3">$result.Average%20Print%20Duration$</set>
+            <set token="tok4">$result.Predicted%20Completion%20Date$</set>
+            <set token="tok5">$result.Remaining%20Time$</set>
+          </done>
+          <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode 
+| table date file  | sort -date
 | lookup completedPrints.csv file OUTPUT actualPrintTime 
-| fillnull value="First Time Printing, Estimate Not Possible" actualPrintTime 
-| mvexpand actualPrintTime 
-| eval predictedCompletion=strftime(date+actualPrintTime, "%F %T"), date=strftime(date,"%F %T")
-| rename date as "Print Started:", file as "File", actualPrintTime as "Previous Completed Duration", predictedCompletion as "Estimated Time of Completion"
-| head 1</query>
+| mvexpand actualPrintTime | stats avg(actualPrintTime) as average max(date) as date by file
+| sort -date | head 1
+| eval remaining=tostring((average+date)-now(),"duration")
+| eval predict=if(average&gt;0,strftime(average+date, "%F %T"),"First Time Print; Esitmate Not Possible")
+| eval average=tostring(average,"duration"), date=strftime(date,"%F %T")
+| fields date file average predict remaining
+| rename date as "Print Started", file as "File", average as "Average Print Duration", predict as "Predicted Completion Date", remaining as "Remaining Time"</query>
           <earliest>-7d@h</earliest>
           <latest>now</latest>
-          <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
         <option name="dataOverlayMode">none</option>
@@ -54,6 +61,19 @@
         <option name="rowNumbers">false</option>
         <option name="totalsRow">false</option>
         <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| makeresults | eval 1="$tok1$" | eval 5="$tok5$"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
   </row>

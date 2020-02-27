@@ -1,10 +1,14 @@
 date,file,category,actualPrintTime,actualWeight
+1582700548.962,threednd_tree_v1.1.gcode,environment,24931,21
+1582666451.227,threednd_tree_v1.1.gcode,environment,24970,21
+1582575030.306,HailHydra.gcode,enemy,64105,35
 1582463909.549,wall_3x3.gcode,dungeon_parts,30350,41
 1582409993.325,Troll_for_Shapeways.gcode,enemy,10755,6
 1582395594.454,Troll_for_Shapeways.gcode,enemy,10506,6
 1582359744.381,pi4_Top_Slots_SM.gcode,ender-misc,19309,18
 1582333680.877,pi4_Bottom_Slots_SM.gcode,ender-misc,14681,15
 1582294679.000,wall_3x3.gcode,dungeon_parts,30108,41
+1582262812.840,Basilisk_fountain.gcode,dungeon_parts,8272,11
 1582252506.183,Petrified_Male_2.gcode,environment,3312,2
 1582246886.430,Petrified_Male_1.gcode,environment,4169,3
 1582241461.954,wall_3x3.gcode,dungeon_parts,30099,41
@@ -21,6 +25,4 @@ date,file,category,actualPrintTime,actualWeight
 1581724434.071,knight_tomb.gcode,dungeon_parts,9148,8
 1581714787.597,20ft_circle.gcode,effects,9106,11
 1581662629.539,noble_entryway.gcode,town,148584,188
-1582575030.306,HailHydra.gcode,enemy,64105,35
-1582666451.227,threednd_tree_v1.1.gcode,environment,24970,21
-1582700548.962,threednd_tree_v1.1.gcode,environment,24931,21
+"1582758964.091","stone_floor_4x4.gcode","dungeon_parts",31936,0
