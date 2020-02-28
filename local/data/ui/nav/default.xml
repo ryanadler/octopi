@@ -3,6 +3,6 @@
 	<collection label="Dashboards">
 		<view name="printing"/>
 		<view name="breakdown"/>
-		<view name="bed"/>
+		<view name="overview" default="true"/>
 	</collection>
 </nav>

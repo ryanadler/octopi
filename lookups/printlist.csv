@@ -42,3 +42,5 @@ date,file,estimatedPrintTime,plaLength,plaMass,layer,walls,fill,tempTool,tempBed
 1581441748,"Nintendo_Switch_joy-con_Grip.gcode",21660,"8.997","26.0","0.1","0.8",20,210,50
 1581309565,"noble_balcony.gcode",92760,"43.905","130.0","0.1","0.8",20,210,50
 1582641125,"threednd_tree_v1.1.gcode",20040,"8.795","26.0","0.1","0.8",20,210,50
+1582816915,"noble_family-nostairs.gcode",72600,"33.79","100.0","0.1","0.8",20,210,50
+1582819215,"noble_balcony.gcode",92760,"43.905","130.0","0.1","0.8",20,210,50
