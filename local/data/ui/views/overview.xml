@@ -15,7 +15,7 @@
 | eval actualPrintTime=if(actualPrintTime&lt;1,estimatedPrintTime,actualPrintTime)
 | mvexpand actualPrintTime | stats avg(actualPrintTime) as average max(date) as date by file
 | sort -date | head 1 | eval average=round(average,0)
-| eval remaining=tostring((average+date)-now(),"duration")
+| eval remaining=tostring((average+date)-now(),"duration") | fillnull value="0" remaining
 | eval predict=if(average&gt;0,strftime(average+date, "%F %T"),"First Time Print; Estimate Not Possible")
 | eval average=tostring(average,"duration"), date=strftime(date,"%F %T")
 | fields date file average predict remaining
@@ -25,10 +25,10 @@
   </search>
   <row>
     <panel id="state">
-      <title>Present Printer State</title>
+      <title>System State</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| makeresults |eval name="Operational" | fields - _time</query>
+          <query>index=printing sourcetype=octopi state=* | head 1 | table state</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
         </search>
@@ -50,13 +50,15 @@
       </viz>
     </panel>
     <panel id="prints">
-      <title>Print Count</title>
+      <title>Completed Print Count</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| makeresults | eval count="0", file="$file$" | fields - _time | append [ | inputlookup completedPrints.csv | search file="$file$" | stats count by file ] | stats sum(count) as count </query>
+          <query>| inputlookup completedPrints.csv | stats count</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
         </search>
         <option name="departures-board-viz.departures-board-viz.align">center</option>
-        <option name="departures-board-viz.departures-board-viz.auto_refresh">true</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh">false</option>
         <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
         <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
         <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
@@ -79,7 +81,7 @@
           <query>| makeresults | eval display="$remaining$" | fields - _time</query>
         </search>
         <option name="departures-board-viz.departures-board-viz.align">center</option>
-        <option name="departures-board-viz.departures-board-viz.auto_refresh">true</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh">false</option>
         <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
         <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
         <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
