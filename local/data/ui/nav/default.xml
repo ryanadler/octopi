@@ -2,7 +2,7 @@
   <view name="search"/>
 	<collection label="Dashboards">
 		<view name="printing"/>
-		<view name="breakdown"/>
-		<view name="overview" default="true"/>
+		<view name="summary" default="true"/>
+		<view name="overview"/>
 	</collection>
 </nav>

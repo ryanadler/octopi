@@ -44,3 +44,4 @@ date,file,estimatedPrintTime,plaLength,plaMass,layer,walls,fill,tempTool,tempBed
 1582641125,"threednd_tree_v1.1.gcode",20040,"8.795","26.0","0.1","0.8",20,210,50
 1582816915,"noble_family-nostairs.gcode",72600,"33.79","100.0","0.1","0.8",20,210,50
 1582819215,"noble_balcony.gcode",92760,"43.905","130.0","0.1","0.8",20,210,50
+1582943246,"bodak_1.gcode",3480,"1.322","3.0","0.1","0.8",20,210,50

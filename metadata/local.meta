@@ -157,11 +157,6 @@ owner = admin
 version = 8.0.2
 modtime = 1581984270.760891000
 
-[views/breakdown]
-owner = admin
-version = 8.0.2
-modtime = 1582320844.231126000
-
 [views/bed]
 owner = admin
 version = 8.0.2
@@ -189,7 +184,7 @@ modtime = 1582572529.561744000
 
 [lookups/completedPrints.csv]
 version = 8.0.2
-modtime = 1582767403.051448000
+modtime = 1582908041.131929000
 
 [lookups/printlist.csv]
 version = 8.0.2
@@ -197,6 +192,13 @@ modtime = 1582721182.557218000
 
 [views/overview]
 version = 8.0.2
-modtime = 1582902112.259154000
+modtime = 1582991879.739196000
+
+[views/summary]
+access = read : [ * ], write : [ * ]
+export = none
+owner = admin
+version = 8.0.2
+modtime = 1582995042.515852000
 
 

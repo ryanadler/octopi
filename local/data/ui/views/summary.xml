@@ -1,5 +1,5 @@
 <dashboard theme="dark">
-  <label>Printer's Overview</label>
+  <label>Summary</label>
   <search id="latest">
     <done>
       <set token="date">$result.date$</set>
@@ -50,11 +50,37 @@
         <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
         <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
         <option name="drilldown">none</option>
-        <option name="height">85</option>
         <option name="refresh.display">progressbar</option>
+        <option name="height">100</option>
       </viz>
     </panel>
-    <panel id="prints">
+    <panel id="list">
+      <title>Total Models Sliced</title>
+      <viz type="departures-board-viz.departures-board-viz">
+        <search>
+          <query>| inputlookup printlist.csv | stats count</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="departures-board-viz.departures-board-viz.align">center</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh">false</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
+        <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
+        <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
+        <option name="departures-board-viz.departures-board-viz.num_characters">10</option>
+        <option name="departures-board-viz.departures-board-viz.size">M</option>
+        <option name="departures-board-viz.departures-board-viz.text_align">center</option>
+        <option name="departures-board-viz.departures-board-viz.theme">dark</option>
+        <option name="departures-board-viz.departures-board-viz.timing">100</option>
+        <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
+        <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="height">100</option>
+
+      </viz>
+    </panel>
+    <panel id="completed">
       <title>Completed Print Count</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
@@ -75,21 +101,28 @@
         <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
         <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
         <option name="drilldown">none</option>
-        <option name="height">85</option>
         <option name="refresh.display">progressbar</option>
+        <option name="height">100</option>
       </viz>
     </panel>
-    <panel id="rTime">
-      <title>Remaining Print Time</title>
+  </row>
+  <row>
+    <panel>
+      <title>Total Print Time</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| makeresults | eval display="$remaining$" | fields - _time</query>
+          <query>| inputlookup completedPrints.csv 
+| stats sum(actualPrintTime) as time 
+| eval time=round(time/60/60,2)</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
         </search>
         <option name="departures-board-viz.departures-board-viz.align">center</option>
         <option name="departures-board-viz.departures-board-viz.auto_refresh">false</option>
         <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
         <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
         <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
+        <option name="departures-board-viz.departures-board-viz.label">Hours</option>
         <option name="departures-board-viz.departures-board-viz.num_characters">10</option>
         <option name="departures-board-viz.departures-board-viz.size">M</option>
         <option name="departures-board-viz.departures-board-viz.text_align">center</option>
@@ -98,67 +131,52 @@
         <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
         <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
         <option name="drilldown">none</option>
-        <option name="height">85</option>
         <option name="refresh.display">progressbar</option>
+        <option name="height">100</option>
+      </viz>
+    </panel>
+    <panel>
+      <title>Total Print Weight</title>
+      <viz type="departures-board-viz.departures-board-viz">
+        <search>
+          <query>| inputlookup completedPrints.csv | stats sum(actualWeight) as weight</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="departures-board-viz.departures-board-viz.align">center</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh">false</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
+        <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
+        <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
+        <option name="departures-board-viz.departures-board-viz.label">Grams</option>
+        <option name="departures-board-viz.departures-board-viz.num_characters">10</option>
+        <option name="departures-board-viz.departures-board-viz.size">M</option>
+        <option name="departures-board-viz.departures-board-viz.text_align">center</option>
+        <option name="departures-board-viz.departures-board-viz.theme">dark</option>
+        <option name="departures-board-viz.departures-board-viz.timing">100</option>
+        <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
+        <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="height">100</option>
       </viz>
     </panel>
   </row>
   <row>
-    <panel id="table" depends="$tablehide$">
-      <table>
-        <search>
-          <query>| rename date as "Print Started", file as "File", average as "Average Print Duration", predict as "Predicted Completion Date", remaining as "Remaining Time"</query>
-        </search>
-        <option name="count">20</option>
-        <option name="dataOverlayMode">none</option>
-        <option name="drilldown">none</option>
-        <option name="percentagesRow">false</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="rowNumbers">false</option>
-        <option name="totalsRow">false</option>
-        <option name="wrap">true</option>
-      </table>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>Print Cam</title>
-      <html>
-       <img src="http://192.168.85.205/webcam/?action=stream" width="480" height="360" controls="false" autoplay="true" muted="true" class="center"/>
-       </html>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <table>
-        <search>
-          <query>| makeresults | eval name="token setting dashboard", tablehide=if(match($state$,"Printing"),"false","true"), state="$state$"</query>
-        <done>
-          <set token="tablehide">$result.tablehide$</set>
-        </done>
-        </search>
-      </table>
-    </panel>
     <panel depends="$alwaysHide$">
       <html>
          <style>
           #state{
             width:40% !important;
             }
-          #rTime{
-            width:35% !important;
+          #completed{
+            width:30% !important;
             }
-          #prints{
-            width:25% !important;
+          #list{
+            width:30% !important;
             }
           #table .table th, .table td {
             text-align: center!important;
-            }
-          #camera{
-            width:25% !important;
-            }
-          #buffL{
-            width:75% !important;
             }
           .ui-resizeable {
             height: 100% !important;
@@ -173,6 +191,29 @@
             }
          </style>
        </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| inputlookup completedPrints.csv
+| lookup printlist.csv file OUTPUT estimatedPrintTime plaMass 
+| eval estimatedWeight=round(plaMass,0) 
+| eval deltaTime=(actualPrintTime-estimatedPrintTime), deltaWeight=(actualWeight-estimatedWeight) 
+| stats median(deltaTime) as deltaTime median(deltaWeight) as deltaWeight median(estimatedPrintTime) as eTime median(actualPrintTime) as aTime median(actualWeight) as actualWeight median(estimatedWeight) as estimatedWeight by file
+| eval percent=round(((aTime/eTime)*100)-100,2)."%" 
+| eval deltaTime=tostring(deltaTime,"duration"), deltaWeight=deltaWeight." grams" 
+| eval eTime=tostring(eTime,"duration"), aTime=tostring(aTime,"duration") 
+| join file [ | inputlookup completedPrints.csv | stats count by file]
+| fields file count eTime aTime deltaTime percent estimatedWeight actualWeight deltaWeight 
+| rename deltaTime as "Median Time Differential", deltaWeight as "Median Weight Differential", percent as "% Under/Over", file as "File", eTime as "Estimated Print Time", aTime as "Actual Print Time", estimatedWeight as "Estimated PLA", actualWeight as "Actual PLA", count as "Completed Prints"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
     </panel>
   </row>
 </dashboard>
