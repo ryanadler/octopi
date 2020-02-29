@@ -27,6 +27,6 @@ date,file,category,actualPrintTime,actualWeight
 1581662629.539,noble_entryway.gcode,town,148584,188
 1582758964.091,stone_floor_4x4.gcode,dungeon_parts,31936,52
 1582806318.474,wall_3x3.gcode,dungeon_parts,30354,41
-1582901486.594,noble_family-nostairs.gcode,town,83992,0
-"1582948289.914","bodak_1.gcode",enemy,4913,0
-"1582975701.171","threednd_tree_v1.1.gcode",environment,25150,0
+1582901486.594,noble_family-nostairs.gcode,town,83992,92
+1582948289.914,bodak_1.gcode,enemy,4913,3
+1582975701.171,threednd_tree_v1.1.gcode,environment,25150,21

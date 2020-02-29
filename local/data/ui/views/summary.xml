@@ -1,30 +1,5 @@
 <dashboard theme="dark">
   <label>Summary</label>
-  <search id="latest">
-    <done>
-      <set token="date">$result.date$</set>
-      <set token="file">$result.file$</set>
-      <set token="average">$result.average$</set>
-      <set token="predict">$result.predict$</set>
-      <set token="remaining">$result.remaining$</set>
-    </done>
-    <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode 
-| table date file  | sort -date
-| lookup printlist.csv file OUtPUT estimatedPrintTime
-| lookup completedPrints.csv file OUTPUT actualPrintTime | fillnull value="0" actualPrintTime
-| eval actualPrintTime=if(actualPrintTime&lt;1,estimatedPrintTime,actualPrintTime)
-| mvexpand actualPrintTime | stats avg(actualPrintTime) as average max(date) as date by file
-| sort -date | head 1 | eval average=round(average,0)
-| eval remaining=tostring((average+date)-now(),"duration") | fillnull value="0" remaining
-| eval predict=if(average&gt;0,strftime(average+date, "%F %T"),"First Time Print; Estimate Not Possible")
-| eval average=tostring(average,"duration"), date=strftime(date,"%F %T")
-| fields date file average predict remaining
-</query>
-    <earliest>-7d@h</earliest>
-    <latest>now</latest>
-    <refresh>5m</refresh>
-    <refreshType>delay</refreshType>
-  </search>
   <row>
     <panel id="state">
       <title>System State</title>
@@ -51,7 +26,7 @@
         <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
-        <option name="height">100</option>
+        <option name="height">80</option>
       </viz>
     </panel>
     <panel id="list">
@@ -76,8 +51,7 @@
         <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
-        <option name="height">100</option>
-
+        <option name="height">80</option>
       </viz>
     </panel>
     <panel id="completed">
@@ -102,7 +76,7 @@
         <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
-        <option name="height">100</option>
+        <option name="height">80</option>
       </viz>
     </panel>
   </row>
@@ -163,6 +137,49 @@
     </panel>
   </row>
   <row>
+    <panel>
+      <title>Median Percentage Time Over Expected Print by Category</title>
+      <single>
+        <search>
+          <query>| inputlookup completedPrints.csv
+| lookup printlist.csv file OUTPUT estimatedPrintTime 
+| eval percent=round(((actualPrintTime/estimatedPrintTime)*100)-100,2)
+| stats median(percent) as percent by category
+| eval percent=percent."%"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="trellis.enabled">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="height">175</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| inputlookup completedPrints.csv
+| lookup printlist.csv file OUTPUT estimatedPrintTime plaMass 
+| eval estimatedWeight=round(plaMass,0) 
+| eval deltaTime=(actualPrintTime-estimatedPrintTime), deltaWeight=(actualWeight-estimatedWeight) 
+| stats median(deltaTime) as deltaTime median(deltaWeight) as deltaWeight median(estimatedPrintTime) as eTime median(actualPrintTime) as aTime median(actualWeight) as actualWeight median(estimatedWeight) as estimatedWeight by file
+| eval percent=round(((aTime/eTime)*100)-100,2)."%" 
+| eval deltaTime=tostring(deltaTime,"duration"), deltaWeight=deltaWeight." grams" 
+| eval eTime=tostring(eTime,"duration"), aTime=tostring(aTime,"duration") 
+| join file [ | inputlookup completedPrints.csv | stats count by file]
+| fields file count eTime aTime deltaTime percent estimatedWeight actualWeight deltaWeight 
+| rename deltaTime as "Median Time Differential", deltaWeight as "Median Weight Differential", percent as "% Under/Over", file as "File", eTime as "Estimated Print Time", aTime as "Actual Print Time", estimatedWeight as "Estimated PLA", actualWeight as "Actual PLA", count as "Completed Prints"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
     <panel depends="$alwaysHide$">
       <html>
          <style>
@@ -193,27 +210,31 @@
        </html>
     </panel>
   </row>
-  <row>
-    <panel>
-      <table>
-        <search>
-          <query>| inputlookup completedPrints.csv
-| lookup printlist.csv file OUTPUT estimatedPrintTime plaMass 
-| eval estimatedWeight=round(plaMass,0) 
-| eval deltaTime=(actualPrintTime-estimatedPrintTime), deltaWeight=(actualWeight-estimatedWeight) 
-| stats median(deltaTime) as deltaTime median(deltaWeight) as deltaWeight median(estimatedPrintTime) as eTime median(actualPrintTime) as aTime median(actualWeight) as actualWeight median(estimatedWeight) as estimatedWeight by file
-| eval percent=round(((aTime/eTime)*100)-100,2)."%" 
-| eval deltaTime=tostring(deltaTime,"duration"), deltaWeight=deltaWeight." grams" 
-| eval eTime=tostring(eTime,"duration"), aTime=tostring(aTime,"duration") 
-| join file [ | inputlookup completedPrints.csv | stats count by file]
-| fields file count eTime aTime deltaTime percent estimatedWeight actualWeight deltaWeight 
-| rename deltaTime as "Median Time Differential", deltaWeight as "Median Weight Differential", percent as "% Under/Over", file as "File", eTime as "Estimated Print Time", aTime as "Actual Print Time", estimatedWeight as "Estimated PLA", actualWeight as "Actual PLA", count as "Completed Prints"</query>
-          <earliest>$earliest$</earliest>
-          <latest>$latest$</latest>
-        </search>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
-      </table>
-    </panel>
-  </row>
 </dashboard>
+<!--
+<search id="latest">
+    <done>
+      <set token="date">$result.date$</set>
+      <set token="file">$result.file$</set>
+      <set token="average">$result.average$</set>
+      <set token="predict">$result.predict$</set>
+      <set token="remaining">$result.remaining$</set>
+    </done>
+    <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode 
+| table date file  | sort -date
+| lookup printlist.csv file OUtPUT estimatedPrintTime
+| lookup completedPrints.csv file OUTPUT actualPrintTime | fillnull value="0" actualPrintTime
+| eval actualPrintTime=if(actualPrintTime&lt;1,estimatedPrintTime,actualPrintTime)
+| mvexpand actualPrintTime | stats avg(actualPrintTime) as average max(date) as date by file
+| sort -date | head 1 | eval average=round(average,0)
+| eval remaining=tostring((average+date)-now(),"duration") | fillnull value="0" remaining
+| eval predict=if(average&gt;0,strftime(average+date, "%F %T"),"First Time Print; Estimate Not Possible")
+| eval average=tostring(average,"duration"), date=strftime(date,"%F %T")
+| fields date file average predict remaining
+</query>
+    <earliest>-7d@h</earliest>
+    <latest>now</latest>
+    <refresh>5m</refresh>
+    <refreshType>delay</refreshType>
+  </search>
+-->
