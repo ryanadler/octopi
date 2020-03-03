@@ -1,8 +1,6 @@
 <nav search_view="search" color="#228B22">
-  <view name="search"/>
-	<collection label="Dashboards">
-		<view name="printing"/>
-		<view name="summary" default="true"/>
-		<view name="overview"/>
-	</collection>
+	<view name="summary" default="true"/>
+	<view name="overview"/>
+	<view name="printing"/>
+	<view name="search"/>
 </nav>

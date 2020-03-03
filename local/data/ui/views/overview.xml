@@ -1,5 +1,5 @@
 <dashboard theme="dark">
-  <label>Printer's Overview</label>
+  <label>Printer Overview</label>
   <search id="latest">
     <done>
       <set token="date">$result.date$</set>
@@ -33,9 +33,6 @@
           <query>index=printing sourcetype=octopi state=* | head 1 | table state</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
-          <done>
-            <set token="state">$result.state$</set>
-          </done>
         </search>
         <option name="departures-board-viz.departures-board-viz.align">center</option>
         <option name="departures-board-viz.departures-board-viz.auto_refresh">true</option>
@@ -55,10 +52,14 @@
       </viz>
     </panel>
     <panel id="prints">
-      <title>Completed Print Count</title>
+      <title>Print Time Overage (Actual vs Estimated)</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| inputlookup completedPrints.csv | stats count</query>
+          <query>| inputlookup completedPrints.csv
+| lookup printlist.csv file OUTPUT estimatedPrintTime
+| eval diff=round(actualPrintTime/estimatedPrintTime,2)
+| stats median(diff) as diff
+| eval diff=(diff*100-100)."%"</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
         </search>
@@ -80,7 +81,7 @@
       </viz>
     </panel>
     <panel id="rTime">
-      <title>Remaining Print Time</title>
+      <title>Current Remaining Print Time</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
           <query>| makeresults | eval display="$remaining$" | fields - _time</query>
@@ -104,9 +105,10 @@
     </panel>
   </row>
   <row>
-    <panel id="table" depends="$tablehide$">
+    <panel id="table">
+      <title>Active Print Job</title>
       <table>
-        <search>
+        <search base="latest">
           <query>| rename date as "Print Started", file as "File", average as "Average Print Duration", predict as "Predicted Completion Date", remaining as "Remaining Time"</query>
         </search>
         <option name="count">20</option>
@@ -121,24 +123,42 @@
     </panel>
   </row>
   <row>
-    <panel>
+    <panel id="extruder">
+      <title>Extruder Temp</title>
+      <chart>
+        <search>
+          <query>| makeresults | eval temp="210" | fields - _time</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.chart">fillerGauge</option>
+        <option name="charting.chart.rangeValues">[0,30,180,220]</option>
+        <option name="charting.gaugeColors">["0x006d9c","0xf8be34","0x53a051"]</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel id="camera">
       <title>Print Cam</title>
       <html>
-       <img src="http://192.168.85.205/webcam/?action=stream" width="480" height="360" controls="false" autoplay="true" muted="true" class="center"/>
+       <img src="http://192.168.85.205/webcam/?action=stream" width="360" height="240" controls="false" autoplay="true" muted="true" class="center"/>
        </html>
+    </panel>
+    <panel id="bed">
+      <title>Bed Temp</title>
+      <chart>
+        <search>
+          <query>| makeresults | eval temp="50" | fields - _time</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.chart">fillerGauge</option>
+        <option name="charting.chart.rangeValues">[0,25,35,50]</option>
+        <option name="charting.gaugeColors">["0x006d9c","0xf8be34","0x53a051"]</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
     </panel>
   </row>
   <row>
-    <panel>
-      <table>
-        <search>
-          <query>| makeresults | eval name="token setting dashboard", tablehide=if(match($state$,"Printing"),"false","true"), state="$state$"</query>
-        <done>
-          <set token="tablehide">$result.tablehide$</set>
-        </done>
-        </search>
-      </table>
-    </panel>
     <panel depends="$alwaysHide$">
       <html>
          <style>
@@ -155,10 +175,13 @@
             text-align: center!important;
             }
           #camera{
-            width:25% !important;
+            width:40% !important;
             }
-          #buffL{
-            width:75% !important;
+          #extruder{
+            width:30% !important;
+            }
+          #bed{
+            width:30% !important;
             }
           .ui-resizeable {
             height: 100% !important;
