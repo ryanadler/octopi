@@ -1,6 +1,22 @@
 <form theme="dark">
   <label>Summary</label>
-  <fieldset submitButton="false"></fieldset>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="time" token="time">
+      <label>Filter: Date</label>
+      <default>
+        <earliest>0</earliest>
+        <latest></latest>
+      </default>
+    </input>
+    <input type="text" token="excess" searchWhenChanged="false">
+      <label>FIlter: Throw Aweight</label>
+      <default>40</default>
+    </input>
+    <input type="text" token="start">
+      <label>Initial Weight</label>
+      <default>994</default>
+    </input>
+  </fieldset>
   <row>
     <panel id="state">
       <title>System State</title>
@@ -111,10 +127,15 @@
       </viz>
     </panel>
     <panel>
-      <title>Total Print Weight</title>
+      <title>Total Print Weight / Print Weight Remaining</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| inputlookup completedPrints.csv | where date&gt;="1582066860.191" | stats sum(actualWeight) as weight</query>
+          <query>| inputlookup completedPrints.csv 
+| where date&gt;="1582066860.191" 
+| stats sum(actualWeight) as weight
+| eval weight=weight+$excess$
+| eval total=$start$
+| eval weight=weight."/".total</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
         </search>

@@ -31,8 +31,8 @@
       <viz type="departures-board-viz.departures-board-viz">
         <search>
           <query>index=printing sourcetype=octopi state=* | head 1 | table state</query>
-          <earliest>$earliest$</earliest>
-          <latest>$latest$</latest>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
         </search>
         <option name="departures-board-viz.departures-board-viz.align">center</option>
         <option name="departures-board-viz.departures-board-viz.auto_refresh">true</option>
