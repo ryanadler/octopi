@@ -49,3 +49,7 @@ file,estimatedPrintTime,plaLength,plaMass,layer,walls,fill,tempTool,tempBed,date
 "water_end1-5.gcode",10080,"5.798","17.0","0.1","0.8",20,210,50,1583163522
 "water_stright1-5.gcode",13260,"7.872","23.0","0.1","0.8",20,210,50,1583163563
 "Dogmeat_Best.gcode",1380,"0.803","2.0","0.1","0.8",20,210,50,1583292047
+"Basilisk_hollow_extra_adult.gcode",23520,"9.3","27.0","0.1","0.8",20,210,50,1583464477
+"Spider_Action_-_Decorative_Base.gcode",13800,"6.542","19.0","0.1","0.8",20,210,50,1583502854
+"Radius15.gcode",1620,"0.92","2.0","0.1","0.8",20,210,50,1583546260
+"Radius5.gcode",600,"0.333","0.0","0.1","0.8",20,210,50,1583546354

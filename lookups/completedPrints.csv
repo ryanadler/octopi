@@ -42,4 +42,7 @@ date,file,category,actualPrintTime,actualWeight
 1583347849.347,WoodStump.gcode,environment,4400,3
 1583359622.100,WoodStump.gcode,environment,4453,3
 1583365546.986,Basilisk_hollow_extra.gcode,enemy,4327,2
-"1583370751.366","WoodStump.gcode",,4480,0
+1583370751.366,WoodStump.gcode,environment,4480,3
+1583400881.616,threednd_tree_v1.1.gcode,environment,25150,21
+1583499298.208,Basilisk_hollow_extra_adult.gcode,enemy,34279,24
+1583522225.345,Spider_Action_-_Decorative_Base.gcode,enemy,18816,19

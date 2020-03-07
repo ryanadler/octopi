@@ -127,7 +127,7 @@
       </viz>
     </panel>
     <panel>
-      <title>Total Print Weight / Print Weight Remaining</title>
+      <title>To Date Printed / Total Available</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
           <query>| inputlookup completedPrints.csv 
