@@ -10,7 +10,7 @@
     </done>
     <query>index=printing sourcetype=octopi "PrintStarted" file=*gcode 
 | table date file  | sort -date
-| lookup printlist.csv file OUtPUT estimatedPrintTime
+| lookup printlist.csv file OUTPUT estimatedPrintTime
 | lookup completedPrints.csv file OUTPUT actualPrintTime | fillnull value="0" actualPrintTime
 | eval actualPrintTime=if(actualPrintTime&lt;1,estimatedPrintTime,actualPrintTime)
 | mvexpand actualPrintTime | stats avg(actualPrintTime) as average max(date) as date by file
@@ -42,6 +42,9 @@
           <query>index=printing sourcetype=octopi state=* | head 1 | table state</query>
           <earliest>-7d@h</earliest>
           <latest>now</latest>
+          <done>
+            <set token="state">$result.state$</set>
+          </done>
         </search>
         <option name="departures-board-viz.departures-board-viz.align">center</option>
         <option name="departures-board-viz.departures-board-viz.auto_refresh">true</option>
@@ -136,7 +139,7 @@
       <title>Extruder Temp</title>
       <chart>
         <search base="temps">
-          <query>| fields tempTool </query>
+          <query>| fields tempTool | eval state="$state$" | eval tempTool=if(state=="Offline",0,tempTool)</query>
         </search>
         <option name="charting.chart">fillerGauge</option>
         <option name="charting.chart.rangeValues">[0,30,180,220]</option>
@@ -154,7 +157,7 @@
       <title>Bed Temp</title>
       <chart>
         <search base="temps">
-          <query>| fields tempBed </query>
+          <query>| fields tempBed | eval state="$state$" | eval tempBed=if(state=="Offline",0,tempBed) </query>
         </search>
         <option name="charting.chart">fillerGauge</option>
         <option name="charting.chart.rangeValues">[0,25,35,50]</option>
