@@ -51,10 +51,4 @@ date,file,category,actualPrintTime,actualWeight
 1583567952.145,water_end1-5.gcode,environment,11956,14
 1583590025.626,mediumCreatureBase.gcode,characters,689,1
 1583619032.226,threednd_tree_v1.1.gcode,environment,25001,24
-1583645114.264,cut_stone_full_pillar.inch.1x1.square.gcode,dungeon_parts,8485,9
-"1584218861.087","Shambling_Mound.gcode",enemy,23262,0
-"1584224485.950","Medusa_-_Simple_Base.gcode",enemy,2500,0
-"1584287859.620","Female_Wzard_Human.gcode",characters,4164,0
-"1584819467.956","Bottom_side_right.gcode","ender-misc",13140,0
-"1584920741.373","Top_side_right.gcode","ender-misc",35624,0
-"1584930593.873","Alignment_pin.gcode","ender-misc",666,0
+"1583645114.264","cut_stone_full_pillar.inch.1x1.square.gcode","dungeon_parts",8485,0

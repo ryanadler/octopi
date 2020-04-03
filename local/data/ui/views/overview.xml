@@ -25,6 +25,15 @@
     <refresh>5m</refresh>
     <refreshType>delay</refreshType>
   </search>
+  <search id="temps">
+    <query>
+      index=printing file=* PrintStarted 
+| head 1 
+| lookup printlist.csv file OUTPUT tempBed tempTool
+    </query>
+    <earliest>-7d@h</earliest>
+    <latest>now</latest>
+  </search>
   <row>
     <panel id="state">
       <title>System State</title>
@@ -126,10 +135,8 @@
     <panel id="extruder">
       <title>Extruder Temp</title>
       <chart>
-        <search>
-          <query>| makeresults | eval temp="210" | fields - _time</query>
-          <earliest>$earliest$</earliest>
-          <latest>$latest$</latest>
+        <search base="temps">
+          <query>| fields tempTool </query>
         </search>
         <option name="charting.chart">fillerGauge</option>
         <option name="charting.chart.rangeValues">[0,30,180,220]</option>
@@ -146,10 +153,8 @@
     <panel id="bed">
       <title>Bed Temp</title>
       <chart>
-        <search>
-          <query>| makeresults | eval temp="50" | fields - _time</query>
-          <earliest>$earliest$</earliest>
-          <latest>$latest$</latest>
+        <search base="temps">
+          <query>| fields tempBed </query>
         </search>
         <option name="charting.chart">fillerGauge</option>
         <option name="charting.chart.rangeValues">[0,25,35,50]</option>

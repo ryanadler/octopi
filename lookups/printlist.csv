@@ -53,3 +53,8 @@ file,estimatedPrintTime,plaLength,plaMass,layer,walls,fill,tempTool,tempBed,date
 "Spider_Action_-_Decorative_Base.gcode",13800,"6.542","19.0","0.1","0.8",20,210,50,1583502854
 "Radius15.gcode",1620,"0.92","2.0","0.1","0.8",20,210,50,1583546260
 "Radius5.gcode",600,"0.333","0.0","0.1","0.8",20,210,50,1583546354
+"Mimic_Chest.gcode",3480,"1.46","4.0","0.1","0.8",20,210,50,1583555469
+"mediumCreatureBase.gcode",600,"0.329","0.0","0.1","0.8",20,210,50,1583589239
+"covid19_headband_rc3.gcode",30000,"11.939","35.0","0.1","0.8",20,210,50,1585833040
+"covid19_headband_rc2.gcode",29580,"11.119","33.0","0.1","0.8",20,210,50,1585833332
+"covid19_headband_rc1.gcode",20280,"7.856","23.0","0.1","0.8",20,210,50,1585833527

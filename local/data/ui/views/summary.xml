@@ -8,10 +8,6 @@
         <latest></latest>
       </default>
     </input>
-    <input type="text" token="excess" searchWhenChanged="false">
-      <label>FIlter: Throw Aweight</label>
-      <default>40</default>
-    </input>
     <input type="text" token="start">
       <label>Initial Weight</label>
       <default>994</default>
@@ -75,7 +71,9 @@
       <title>Completed Print Count</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| inputlookup completedPrints.csv | stats count</query>
+          <query>| inputlookup completedPrints.csv 
+| where date&gt;="1582066860.191" 
+| stats count</query>
           <earliest>$earliest$</earliest>
           <latest>$latest$</latest>
         </search>
@@ -102,7 +100,8 @@
       <title>Total Print Time</title>
       <viz type="departures-board-viz.departures-board-viz">
         <search>
-          <query>| inputlookup completedPrints.csv | where date&gt;="1582066860.191"
+          <query>| inputlookup completedPrints.csv 
+| where date&gt;="1582066860.191" 
 | stats sum(actualPrintTime) as time 
 | eval time=round(time/60/60,2)</query>
           <earliest>$earliest$</earliest>
@@ -133,7 +132,6 @@
           <query>| inputlookup completedPrints.csv 
 | where date&gt;="1582066860.191" 
 | stats sum(actualWeight) as weight
-| eval weight=weight+$excess$
 | eval total=$start$
 | eval weight=weight."/".total</query>
           <earliest>$earliest$</earliest>

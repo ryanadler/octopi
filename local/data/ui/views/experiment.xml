@@ -1,0 +1,123 @@
+<dashboard theme="dark">
+  <label>Experiment</label>
+  <description>Single Spool Challenge</description>
+  <row>
+    <panel id="vendor">
+      <single>
+        <title>3D Printer</title>
+        <search>
+          <query>| makeresults | eval name="Ender 3 Pro" | fields - _time</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+      <single>
+        <title>Slicing Software</title>
+        <search>
+          <query>| makeresults | eval name="Creality Slicer" | fields - _time</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Total Print Time</title>
+      <viz type="departures-board-viz.departures-board-viz">
+        <search>
+          <query>| inputlookup completedPrints.csv 
+| where date&gt;="1582066860.191" 
+| stats sum(actualPrintTime) as time 
+| eval time=round(time/60/60,2)</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="departures-board-viz.departures-board-viz.align">center</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh">false</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
+        <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
+        <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
+        <option name="departures-board-viz.departures-board-viz.label">Hours</option>
+        <option name="departures-board-viz.departures-board-viz.num_characters">10</option>
+        <option name="departures-board-viz.departures-board-viz.size">M</option>
+        <option name="departures-board-viz.departures-board-viz.text_align">center</option>
+        <option name="departures-board-viz.departures-board-viz.theme">dark</option>
+        <option name="departures-board-viz.departures-board-viz.timing">100</option>
+        <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
+        <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="height">100</option>
+      </viz>
+    </panel>
+    <panel>
+      <title>To Date Printed / Total Available</title>
+      <viz type="departures-board-viz.departures-board-viz">
+        <search>
+          <query>| inputlookup completedPrints.csv 
+| where date&gt;="1582066860.191" 
+| stats sum(actualWeight) as weight
+| eval total=$start$
+| eval weight=weight."/".total</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="departures-board-viz.departures-board-viz.align">center</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh">false</option>
+        <option name="departures-board-viz.departures-board-viz.auto_refresh_period">300</option>
+        <option name="departures-board-viz.departures-board-viz.force_all_caps">false</option>
+        <option name="departures-board-viz.departures-board-viz.is_fixed_length">false</option>
+        <option name="departures-board-viz.departures-board-viz.label">Grams</option>
+        <option name="departures-board-viz.departures-board-viz.num_characters">10</option>
+        <option name="departures-board-viz.departures-board-viz.size">M</option>
+        <option name="departures-board-viz.departures-board-viz.text_align">center</option>
+        <option name="departures-board-viz.departures-board-viz.theme">dark</option>
+        <option name="departures-board-viz.departures-board-viz.timing">100</option>
+        <option name="departures-board-viz.departures-board-viz.token_id">dbv_id</option>
+        <option name="departures-board-viz.departures-board-viz.token_term">dbv_term</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="height">100</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$alwaysHide$">
+      <html>
+         <style>
+          #vendor{
+            width:60% !important;
+            }
+          #state{
+            width:40% !important;
+            }
+          #completed{
+            width:30% !important;
+            }
+          #list{
+            width:30% !important;
+            }
+          #table .table th, .table td {
+            text-align: center!important;
+            }
+          .ui-resizeable {
+            height: 100% !important;
+            }
+          .splunk-viz-msg {
+            height: 100% !important;
+            }
+          .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            }
+         </style>
+       </html>
+    </panel>
+  </row>
+</dashboard>
