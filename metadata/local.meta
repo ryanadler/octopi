@@ -145,18 +145,6 @@ owner = admin
 version = 8.0.1
 modtime = 1581218568.257623000
 
-
-#####
-# Dashboard Views
-#####
-
-[views/printing]
-access = read : [ * ], write : [ admin ]
-export = none
-owner = admin
-version = 8.0.2
-modtime = 1581984270.760891000
-
 [views/bed]
 owner = admin
 version = 8.0.2
